@@ -12,25 +12,51 @@ function ProductCard({
   price
 }) {
   const [count, setCount] = useState(0);
+  const [indiPrice, setIndiPrice] = useState(0);
 
   const handleCountChange = (val) => {
-    setCount(count + val);
-    handleChangeOfCount(count);
+    if (count + val < 0) {
+      setCount(0);
+    } else {
+      setCount(count + val);
+      handleChangeOfCount(val);
+    }
   };
 
-  console.log(count);
+  const hanldePrice = (rate) => {
+    if (indiPrice + Number(rate) < 0) {
+      setIndiPrice(0);
+    } else {
+      setIndiPrice(indiPrice + Number(rate));
+      handleTotalPrice(Number(rate));
+    }
+  };
 
-  const [total, handleChangeOfCount] = useContext(CartContext);
+  // console.log(count);
+
+  const [total, handleChangeOfCount, totalprice, handleTotalPrice] = useContext(
+    CartContext
+  );
 
   return (
     <div className={styling.Card}>
       <h3>{name}</h3>
       <h4>Origin : {country_of_origin}</h4>
-      <img src={image} alt={name} style={{ width: "60px", height: "60px" }} />
+      <img
+        src={image}
+        alt={name}
+        style={{
+          width: "60px",
+          height: "60px",
+          padding: "10px",
+          border: "2px solid red"
+        }}
+      />
       <div>
         <h4>Description:</h4> {description}
       </div>
-      <h2>₹{price}</h2>
+      <h2>Price : ₹{Math.round(price)}</h2>
+      <h2>₹{Math.round(indiPrice)}</h2>
       <div>
         <Button
           style={{
@@ -42,6 +68,7 @@ function ProductCard({
           variant="contained"
           onClick={() => {
             handleCountChange(-1);
+            hanldePrice(-price);
           }}
         >
           -
@@ -57,6 +84,7 @@ function ProductCard({
           }}
           onClick={() => {
             handleCountChange(+1);
+            hanldePrice(price);
           }}
         >
           +

@@ -6,7 +6,9 @@ import { CartContext } from "../Context/CardContext";
 
 function HomePage() {
   const [myData, setMyData] = useState([]);
-  const [total, handleChangeOfCount] = useContext(CartContext);
+  const [total, handleChangeOfCount, totalprice, handleTotalPrice] = useContext(
+    CartContext
+  );
 
   const handleFetching = () => {
     return axios.get("https://eval2data.herokuapp.com/products");
@@ -23,7 +25,9 @@ function HomePage() {
   return (
     <>
       <h1>All Products</h1>
-      <h2>{total}</h2>
+      <h2>
+        Cart : {total} Totel Price : ₹{Math.round(totalprice)}
+      </h2>
       <div className={styling.home}>
         <br />
         {myData.map((item) => (
